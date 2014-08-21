@@ -1,4 +1,4 @@
-laravel-jqgrid-tutorial
+Laravel jqGrid Tutorial
 =======================
 
-Base application to be used with laravel jqgrid package tutorials http://....
+.....
