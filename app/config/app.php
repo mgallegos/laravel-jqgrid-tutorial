@@ -121,6 +121,7 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
+		'Mgallegos\LaravelJqgrid\LaravelJqgridServiceProvider',
 
 	),
 
@@ -188,6 +189,8 @@ return array(
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
+		'GridRender'      => 'Mgallegos\LaravelJqgrid\Facades\GridRender',
+		'GridEncoder'     => 'Mgallegos\LaravelJqgrid\Facades\GridEncoder',
 
 	),
 
