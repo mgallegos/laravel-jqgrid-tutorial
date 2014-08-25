@@ -48,8 +48,9 @@
 	<div id='page-container' class="container" role="main" data-current-page-width="">
 	<div class="row">
 		<div class="col-lg-offset-2 col-md-offset-1 col-lg-8 col-md-10">
-			@yield('container')
+			{{ Form::hidden('selectedInvoiceId', '', array('id'=>'selectedInvoiceId')) }}
 			{{ Form::button('<i class="fa fa-spinner fa-spin fa-lg"></i> Loading', array('id' => 'app-loader', 'class' => 'btn btn-warning btn-disable btn-lg app-loader hidden', 'disabled' => 'disabled')) }}
+			@yield('container')
 		</div>
 	</div>
 	</div>
