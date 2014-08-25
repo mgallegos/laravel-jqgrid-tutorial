@@ -8,12 +8,4 @@ class Invoice extends Eloquent {
 	 * @var string
 	 */
 	protected $table = 'DEMO_Invoice';
-
-
-	public function items()
-	{
-		return $this->has_many('InvoiceItem', 'invoice');
-	}
-
-
 }
