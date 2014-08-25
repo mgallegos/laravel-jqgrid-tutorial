@@ -94,3 +94,8 @@ body {
 	font-size: 14px;
 	padding-left: 12px;
 }
+
+/* Grid margins*/
+#gbox_InvoiceItemsGrid, #gbox_PivotGrid {
+  margin-top: 20px;
+}
