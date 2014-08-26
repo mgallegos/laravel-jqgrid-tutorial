@@ -98,4 +98,5 @@ body {
 /* Grid margins*/
 #gbox_InvoiceItemsGrid, #gbox_PivotGrid {
   margin-top: 20px;
+  margin-bottom: 20px;
 }
