@@ -8,5 +8,4 @@ class InvoiceItem extends Eloquent {
 	 * @var string
 	 */
 	protected $table = 'DEMO_Invoice_Item';
-	
 }
