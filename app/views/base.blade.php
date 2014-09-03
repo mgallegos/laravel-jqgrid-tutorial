@@ -21,6 +21,8 @@
 	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 	{{ HTML::script('assets/jquery-v2.0.3/jquery.js'); }}
+	{{ HTML::script('assets/jquery-ui-v1.10.3/dev/minified/jquery.ui.effect.min.js'); }}
+	{{ HTML::script('assets/jquery-ui-v1.10.3/dev/minified/jquery.ui.effect-shake.min.js'); }}
 	{{ HTML::script('assets/jquery-jqGrid-v4.6.0/js/i18n/grid.locale-en.js'); }}
 	{{ HTML::script('assets/jquery-jqGrid-v4.6.0/js/jquery.jqGrid.src.js'); }}
 	{{ HTML::script('assets/jquery-scrollto-v1.4.11/jquery.scrollTo.min.js'); }}
