@@ -24,7 +24,7 @@
 	{{ HTML::script('assets/jquery-jqGrid-v4.6.0/js/i18n/grid.locale-en.js'); }}
 	{{ HTML::script('assets/jquery-jqGrid-v4.6.0/js/jquery.jqGrid.src.js'); }}
 	{{ HTML::script('assets/bootstrap-v3.2.0/js/bootstrap.min.js'); }}
-	{{ HTML::script('assets/jquery-jqMgVal-v1.0.0/js/jquery.jqMgVal.src.js'); }}
+	{{ HTML::script('assets/jquery-jqMgVal-v1.0.0/jquery.jqMgVal.src.js'); }}
 	{{ HTML::script('assets/tutorial/js/helpers.js'); }}
 	{{ HTML::script('assets/tutorial/js/base.js'); }}
 	<title>Laravel jqGrid Tutorial</title>
