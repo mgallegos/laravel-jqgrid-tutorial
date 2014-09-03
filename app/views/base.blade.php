@@ -23,6 +23,7 @@
 	{{ HTML::script('assets/jquery-v2.0.3/jquery.js'); }}
 	{{ HTML::script('assets/jquery-jqGrid-v4.6.0/js/i18n/grid.locale-en.js'); }}
 	{{ HTML::script('assets/jquery-jqGrid-v4.6.0/js/jquery.jqGrid.src.js'); }}
+	{{ HTML::script('assets/jquery-scrollto-v1.4.11/jquery.scrollTo.min.js'); }}
 	{{ HTML::script('assets/bootstrap-v3.2.0/js/bootstrap.min.js'); }}
 	{{ HTML::script('assets/jquery-jqMgVal-v1.0.0/jquery.jqMgVal.src.js'); }}
 	{{ HTML::script('assets/tutorial/js/helpers.js'); }}
