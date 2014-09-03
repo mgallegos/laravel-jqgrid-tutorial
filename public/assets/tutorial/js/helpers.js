@@ -6,6 +6,48 @@
 */
 
 /**
+ * Populate form fields.
+ *
+ * @param string object
+ * 	 The index must correspond to the form element id and the value will be set as the form element value.
+ * @param string prefix
+ * 	Elements id prefix.
+ *
+ * @returns void
+ */
+function populateFormFields(object, prefix)
+{
+	prefix = prefix || '';
+
+	$.each(object, function( index, value )
+	{
+		var element = prefix +  index.replace(/_/g,'-');
+
+		if($('#' + element).is("input,textarea"))
+		{
+			switch ($('#' + element).attr('type'))
+			{
+				case 'checkbox': //missing radio, autocomplete, multiselect
+					if((value == 1 && !$('#' + element).is(":checked")) || (value == 0 && $('#' + element).is(":checked")))
+					{
+						$('#' + element).click();
+					}
+					break;
+				default:
+					$('#' + element).val(value);
+					break;
+			}
+		}
+
+		if($('#' + element).is("select"))
+		{
+			$('#' + element).val(value);
+		}
+	});
+};
+
+
+/**
  * Create an object from form fields.
  * Use: $('#formId').formToObject();
  *
