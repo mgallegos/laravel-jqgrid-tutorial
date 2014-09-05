@@ -1,12 +1,11 @@
 /**
-* @license jqMgVal  1.0.0 - jQuery MG Validation Plugin
+* @license jqMgVal  v0.1 - jQuery MG Validation Plugin
 * Copyright (c) 2014, Mario Gallegos, freelance@mariogallegos.com
-* jqMgVal's Home page can be found at http://www.
+* jqMgVal's Home page can be found at http://www.mariogallegos.com/open-source-development/jquery-mg-validation/documentation
 * Licensed under the MIT license
 * http://www.opensource.org/licenses/mit-license.php
 */
 
-//CSS con: help-block, pull-right, has-error, has-success
 (function ( $ )
 {
 	"use strict";
@@ -22,8 +21,8 @@
 			case 'addFormFieldsValidations':
 				this.jqMgValAddFormFieldsValidations();
 				break;
-			case 'cleanForm':
-				this.jqMgValCleanForm();
+			case 'clearForm':
+				this.jqMgValclearForm();
 				break;
 			case 'isFormValid':
 				return this.jqMgValIsFormValid();
@@ -38,20 +37,58 @@
 		helpMessageClass: 'mg-hm',
 		invalidFieldJqueryUiEffect: 'shake', //none, ...
 		invalidFieldJqueryUiEffectDuration: 600,
-		successIconClass: 'fa fa-check-circle',
-		failureIconClass: 'fa fa-times-circle',
+		successIconClass: 'glyphicon glyphicon-remove',
+		failureIconClass: 'glyphicon glyphicon-ok',
 		fieldDivContainer: 'form-group',
-		formatter: {
-				decimalSeparator: '.',
-				thousandsSeparator: ',',
-				decimalPlaces: 2,
-				defaultValue: '0.00'
+		validators:{
+			positiveInteger:{
+				formatter: {
+						thousandsSeparator: ',',
+						defaultValue: '0'
+				},
+				validationRegex: '^([1-9]{1}[0-9]{0,2}(\\,[0-9]{3})*|[1-9]{1}[0-9]{0,}|0)$',
+				allowedCharactersRegex: '^(\\d|,)$',
+				regexHelpMessage:'positiveIntegerRegexHelpMessage'
+			},
+			positiveIntegerNoZero:{
+				formatter: {
+						thousandsSeparator: ',',
+						defaultValue: '1'
+				},
+				validationRegex: '^([1-9]{1}[0-9]{0,2}(\\,[0-9]{3})*|[1-9]{1}[0-9]{0,})$',
+				allowedCharactersRegex: '^(\\d|,)$',
+				regexHelpMessage:'positiveIntegerNoZeroRegexHelpMessage'
+			},
+			signedInteger:{
+				formatter: {
+						thousandsSeparator: ',',
+						defaultValue: '0'
+				},
+				validationRegex: '^(\\+|-)?([1-9]{1}[0-9]{0,2}(\\,[0-9]{3})*|[1-9]{1}[0-9]{0,}|0)$',
+				allowedCharactersRegex: '^(\\d|,|\\+|-)$',
+				regexHelpMessage:'signedIntegerRegexHelpMessage'
+			},
+			money:{
+				formatter: {
+						decimalSeparator: '.',
+						thousandsSeparator: ',',
+						decimalPlaces: 2,
+						defaultValue: '0.00'
+				},
+				validationRegex: '^\\$?([1-9]{1}[0-9]{0,2}(\\,[0-9]{3})*(\\.[0-9]{0,2})?|[1-9]{1}[0-9]{0,}(\\.[0-9]{0,2})?|0(\\.[0-9]{0,2})?|(\\.[0-9]{1,2})?)$',
+				allowedCharactersRegex: '^(\\d|,)$',
+				regexHelpMessage:'moneyRegexHelpMessage'
+			}
 		},
 		lang: {
 				requiredFieldText: '* Required field',
 				dateRangeFromRequiredText: 'dateRangeFromRequired',
 				dateRangeToRequiredText: 'dateRangeToRequired',
-				defaultRegexHelpMessage: 'defaultRegexHelpMessage',
+				defaultRegexHelpMessage: 'The value entered is not valid.',
+				positiveIntegerRegexHelpMessage: 'The value entered must be a positive integer, example: 1,000 | 1000',
+				positiveIntegerNoZeroRegexHelpMessage: 'The value entered must be a positive integer (zero is not allowed), example: 1,000 | 1000',
+				signedIntegerRegexHelpMessage: 'The value entered must be an integer, example: -1 | 1 | 1,000 | 1000',
+				moneyRegexHelpMessage: 'The value entered must be numeric, example: 1,000.00 | 1000.00 | 1000',
 				dateFormat: 'mm/dd/yy',
 				dateInvalid: 'dateInvalid',
 				dateInvalidFrom: 'dateInvalidFrom',
@@ -65,9 +102,9 @@
 	{
 		var helpMessageLocation = opts.helpMessageLocation;
 
-		if(this.attr('data-help-message-location') != undefined)
+		if(this.attr('data-mg-help-message-location') != undefined)
 		{
-			helpMessageLocation = this.attr('data-help-message-location');
+			helpMessageLocation = this.attr('data-mg-help-message-location');
 		}
 
 		if(helpMessageLocation == 'append')
@@ -101,15 +138,15 @@
 	{
 		var regex;
 
-		if(this.jqMgValIsEmpty() || (this.val()=='__/__/____' && this.attr('data-daterange') != undefined))
+		if(this.jqMgValIsEmpty() || (this.val()=='__/__/____' && this.attr('data-mg-daterange') != undefined))
 		{
-			if(this.attr('data-required') != undefined)
+			if(this.attr('data-mg-required') != undefined)
 			{
-				if(this.attr('data-daterange') == 'from')
+				if(this.attr('data-mg-daterange') == 'from')
 				{
 					return opts.lang.dateRangeFromRequiredText;
 				}
-				else if(this.attr('data-daterange') == 'to')
+				else if(this.attr('data-mg-daterange') == 'to')
 				{
 					return opts.lang.dateRangeToRequiredText;
 				}
@@ -129,13 +166,13 @@
 		}
 		else
 		{
-			if(this.attr('data-regex') != undefined)
+			if(this.attr('data-mg-regex') != undefined)
 			{
-				var RegExpObject = new RegExp(this.attr('data-regex')), regexHelpMessage = '';
+				var RegExpObject = new RegExp(this.attr('data-mg-regex')), regexHelpMessage = '';
 
 				if(RegExpObject.test($.trim(this.val())))
 				{
-					if(this.attr('data-daterange') != undefined)
+					if(this.attr('data-mg-daterange') != undefined)
 					{
 						try
 						{
@@ -143,7 +180,7 @@
 						}
 						catch(e)
 						{
-							switch (this.attr('data-daterange'))
+							switch (this.attr('data-mg-daterange'))
 							{
 							case 'from':
 								return opts.lang.dateInvalidFrom;
@@ -162,16 +199,16 @@
 				}
 				else
 				{
-					if(this.attr('data-regex-help-message') != undefined)
+					if(this.attr('data-mg-regex-help-message') != undefined)
 					{
-						regexHelpMessage = this.attr('data-regex-help-message');
+						regexHelpMessage = this.attr('data-mg-regex-help-message');
 					}
 					else
 					{
 						regexHelpMessage = opts.lang.defaultRegexHelpMessage;
 					}
 
-					switch (this.attr('data-daterange'))
+					switch (this.attr('data-mg-daterange'))
 					{
 						case 'from':
 							return opts.lang.dateFromRegexHelpMessage;
@@ -196,9 +233,9 @@
 	{
 		var helpMessageLocation = opts.helpMessageLocation;
 
-		if(this.attr('data-help-message-location') != undefined)
+		if(this.attr('data-mg-help-message-location') != undefined)
 		{
-			helpMessageLocation = this.attr('data-help-message-location');
+			helpMessageLocation = this.attr('data-mg-help-message-location');
 		}
 
 		var helpMessageTextStyle='';
@@ -220,13 +257,11 @@
 		}
 
 		var formGroupDiv = this.closest('.' + opts.fieldDivContainer);
-		//formGroupDiv.children('.control-label').children('.' + opts.successIconClass.split(' ')[0] + ',.' + opts.failureIconClass.split(' ')[0] + ',.mg-is').remove();
-		formGroupDiv.children('label').children('.' + opts.successIconClass.split(' ')[0] + ',.' + opts.failureIconClass.split(' ')[0] + ',.mg-is').remove();
+		formGroupDiv.children('.control-label').children('.' + opts.successIconClass.split(' ')[0] + ',.' + opts.failureIconClass.split(' ')[0] + ',.mg-is').remove();
 		formGroupDiv.removeClass('has-error');
 		formGroupDiv.removeClass('has-success');
 		formGroupDiv.addClass(cssClass);
-		//formGroupDiv.children('.control-label').append("<i class='mg-is'>&nbsp;</i><i class='" + icon + "'></i>");
-		formGroupDiv.children('label').append("<i class='mg-is'>&nbsp;</i><i class='" + icon + "'></i>");
+		formGroupDiv.children('.control-label').append("<i class='mg-is'>&nbsp;</i><i class='" + icon + "'></i>");
 	};
 
 	$.fn.jqMgValKeyPressCrossBrowserCompatibility = function(event)
@@ -253,22 +288,45 @@
 	{
 		this.find('input[type=text],input[type=password],textarea,select').each(function()
 		{
-			if($(this).attr('data-ignore') != undefined)
+			if($(this).attr('data-mg-validator') != undefined)
+			{
+				if(opts['validators'][$(this).attr('data-mg-validator')]['validationRegex'] != undefined)
+				{
+					$(this).attr('data-mg-regex', opts['validators'][$(this).attr('data-mg-validator')]['validationRegex']);
+				}
+
+				if(opts['validators'][$(this).attr('data-mg-validator')]['allowedCharactersRegex'] != undefined)
+				{
+					$(this).attr('data-mg-allowed-characters-regex', opts['validators'][$(this).attr('data-mg-validator')]['allowedCharactersRegex']);
+				}
+
+				if(opts['validators'][$(this).attr('data-mg-validator')]['formatter'] != undefined)
+				{
+					$(this).attr('data-mg-formatter', JSON.stringify(opts['validators'][$(this).attr('data-mg-validator')]['formatter']));
+				}
+
+				if(opts['validators'][$(this).attr('data-mg-validator')]['regexHelpMessage'] != undefined)
+				{
+					$(this).attr('data-mg-regex-help-message', opts.lang[opts['validators'][$(this).attr('data-mg-validator')]['regexHelpMessage']]);
+				}
+			}
+
+			if($(this).attr('data-mg-ignore') != undefined)
 			{
 				return true;
 			}
 
-			if($(this).attr('data-required') != undefined)
+			if($(this).attr('data-mg-required') != undefined)
 			{
 				$(this).jqMgValAddRequiredLabel();
 			}
 
-			if($(this).attr('data-daterange') == 'from')
+			if($(this).attr('data-mg-daterange') == 'from')
 			{
 				return true;
 			}
 
-			if($(this).attr('data-daterange')=='to')
+			if($(this).attr('data-mg-daterange')=='to')
 			{
 				$(this).focusout(function()
 				{
@@ -288,19 +346,9 @@
 				}
 				else
 				{
-					if($(this).attr('data-formatter') != undefined)
+					if($(this).attr('data-mg-formatter') != undefined)
 					{
-						switch ($(this).attr('data-formatter'))
-						{
-							case 'integer':
-								$(this).val($.fmatter.util.NumberFormat($(this).val().replace(/,/g,''), {thousandsSeparator: opts.formatter.thousandsSeparator, defaultValue: opts.formatter.defaultValue}));
-								break;
-							case 'money':
-								$(this).val($.fmatter.util.NumberFormat($(this).val().replace(/,/g,''), {decimalSeparator: opts.formatter.decimalSeparator, thousandsSeparator: opts.formatter.thousandsSeparator, decimalPlaces: opts.formatter.decimalPlaces, defaultValue: opts.formatter.defaultValue}));
-								break;
-							default:
-								break;
-						}
+						$(this).val($.fmatter.util.NumberFormat($(this).val().replace(/,/g,''), JSON.parse($(this).attr('data-mg-formatter')) ));
 					}
 
 					$(this).jqMgValDisplayMessage('has-success', '');
@@ -312,7 +360,7 @@
 				}
 			});
 
-			if($(this).attr('data-allowed-characters-regex') != undefined)
+			if($(this).attr('data-mg-allowed-characters-regex') != undefined)
 			{
 				$(this).keypress(function(event)
 				{
@@ -322,7 +370,7 @@
 					}
 
 					var chr = String.fromCharCode(event.charCode == null ? event.keyCode : event.charCode);
-					var RegExpObject = new RegExp($(this).attr('data-allowed-characters-regex'));
+					var RegExpObject = new RegExp($(this).attr('data-mg-allowed-characters-regex'));
 
 					if(!RegExpObject.test(chr))
 					{
@@ -343,7 +391,7 @@
 		});
 	};
 
-	$.fn.jqMgValCleanForm = function()
+	$.fn.jqMgValclearForm = function()
 	{
 		this.find('input[type=text],input[type=password],input[type=hidden],textarea').each(function()
 		{
